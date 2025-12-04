@@ -85,6 +85,7 @@ export default function Home() {
           <PhotoItem
             key={`${photo.src}-${index}`}
             src={photo.src}
+            thumbnailSrc={photo.thumbnail} // Pass thumbnail path
             alt={photo.alt}
             meta={photo.meta}
             orientation={photo.orientation as "vertical" | "horizontal"}

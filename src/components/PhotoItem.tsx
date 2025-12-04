@@ -6,6 +6,7 @@ import { useState } from "react";
 
 interface PhotoItemProps {
     src: string;
+    thumbnailSrc?: string; // Added thumbnailSrc prop
     alt: string;
     priority?: boolean;
     orientation?: "vertical" | "horizontal";
@@ -13,11 +14,11 @@ interface PhotoItemProps {
         location?: string;
         date?: string;
     };
-    onClick?: () => void; // Added onClick prop
+    onClick?: () => void;
 }
 
-export default function PhotoItem({ src, alt, priority = false, orientation = "horizontal", meta, onClick }: PhotoItemProps) {
-    const [isLoading, setIsLoading] = useState(true); // Added isLoading state
+export default function PhotoItem({ src, thumbnailSrc, alt, priority = false, orientation = "horizontal", meta, onClick }: PhotoItemProps) {
+    const [isLoading, setIsLoading] = useState(true);
 
     return (
         <motion.div
@@ -33,14 +34,13 @@ export default function PhotoItem({ src, alt, priority = false, orientation = "h
                 style={{ aspectRatio: orientation === "vertical" ? "2/3" : "3/2" }}
             >
                 <img
-                    src={src}
+                    src={thumbnailSrc || src} // Use thumbnail if available
                     alt={alt}
-                    className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 group-hover:scale-105 ${ // Modified className for loading state
-                        isLoading ? "scale-110 blur-xl grayscale" : "scale-100 blur-0 grayscale-0"
+                    className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 group-hover:scale-105 ${isLoading ? "scale-110 blur-xl grayscale" : "scale-100 blur-0 grayscale-0"
                         }`}
                     loading={priority ? "eager" : "lazy"}
                     onLoad={() => setIsLoading(false)}
-                    onError={() => setIsLoading(false)} // Handle error state
+                    onError={() => setIsLoading(false)}
                 />
                 {/* Overlay on hover */}
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />

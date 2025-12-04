@@ -35,6 +35,7 @@ public/images/portfolio/live/*.jpg
 public/images/portfolio/live/*.jpeg
 public/images/portfolio/live/*.png
 !public/images/portfolio/*/optimized/
+!public/images/portfolio/*/thumbnails/
 
 # Zip files
 *.zip

@@ -57,16 +57,28 @@ categories.forEach(category => {
             } else if (item.match(/\.(jpg|jpeg|png|webp)$/i)) {
                 // Skip if this is a file in the parent directory and an optimized version exists
                 if (!isOptimizedDir) {
+                    // Check for optimized version
                     const optimizedPath = path.join(dir, 'optimized', item);
                     if (fs.existsSync(optimizedPath)) {
                         console.log(`   Skipping ${item}, using optimized version instead`);
-                        return; // Skip this file, use optimized version
+                        return; // Skip the large file in the parent directory
                     }
                 }
 
-                // Construct web-accessible path
-                // fullPath: /Users/.../public/images/portfolio/live/subdir/image.jpg
-                // webPath: /images/portfolio/live/subdir/image.jpg
+                // Check for thumbnail
+                let thumbnailSrc = null;
+                if (isOptimizedDir) {
+                    // If we are in optimized dir, check parallel thumbnails dir
+                    const thumbDir = path.join(dir, '../thumbnails');
+                    const thumbPath = path.join(thumbDir, item);
+                    if (fs.existsSync(thumbPath)) {
+                        // Construct web-accessible path for thumbnail
+                        const relativeThumbPath = path.relative(path.join(__dirname, '../public'), thumbPath);
+                        thumbnailSrc = '/' + relativeThumbPath.split(path.sep).join('/');
+                    }
+                }
+
+                // Construct web-accessible path for the main image
                 const relativePath = path.relative(path.join(__dirname, '../public'), fullPath);
                 const src = '/' + relativePath.split(path.sep).join('/');
 
@@ -75,17 +87,55 @@ categories.forEach(category => {
 
                 let photoData = {
                     src,
+                    thumbnail: thumbnailSrc || src, // Fallback to src if no thumbnail
                     alt: existing?.alt || `Portfolio photo ${item}`,
                     category, // Set category based on folder
                     orientation: existing?.orientation || 'horizontal',
                     meta: existing?.meta || {}
                 };
 
-                // If orientation is missing or we want to re-verify
-                if (!existing) {
-                    const dims = getDimensions(fullPath);
-                    if (dims) {
-                        photoData.orientation = dims.height > dims.width ? 'vertical' : 'horizontal';
+                // Read Exif data if not already present or if we want to re-read
+                if (!existing || !existing.meta || Object.keys(existing.meta).length === 0) {
+                    try {
+                        const buffer = fs.readFileSync(fullPath);
+                        const parser = exifParser.create(buffer);
+                        const result = parser.parse();
+
+                        if (result.tags) {
+                            // Extract date
+                            if (result.tags.DateTimeOriginal) {
+                                const date = new Date(result.tags.DateTimeOriginal * 1000);
+                                photoData.meta.date = date.toLocaleDateString('en-US', {
+                                    year: 'numeric',
+                                    month: 'long',
+                                    day: 'numeric'
+                                });
+                                // Store timestamp for sorting
+                                photoData.meta.timestamp = result.tags.DateTimeOriginal;
+                            }
+                        }
+                    } catch (err) {
+                        // Ignore exif errors, e.g., if no EXIF data or file is not an image
+                        // console.warn(`Could not read EXIF for ${fullPath}: ${err.message}`);
+                    }
+                }
+
+                // Determine orientation if not already present or if we want to re-verify
+                if (!existing || !existing.orientation) {
+                    try {
+                        const dimensions = sizeOf(fullPath);
+                        if (dimensions.width < dimensions.height) {
+                            photoData.orientation = 'vertical';
+                        } else {
+                            photoData.orientation = 'horizontal';
+                        }
+                    } catch (err) {
+                        console.error(`Error getting dimensions for ${item}:`, err.message);
+                        // Fallback to sips if image-size fails (e.g., for unsupported formats)
+                        const dims = getDimensions(fullPath);
+                        if (dims) {
+                            photoData.orientation = dims.height > dims.width ? 'vertical' : 'horizontal';
+                        }
                     }
                 }
 
