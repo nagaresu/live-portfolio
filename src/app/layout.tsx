@@ -12,17 +12,18 @@ export const metadata: Metadata = {
     template: "%s | Keisuke Sunagare",
   },
   description: "Professional photographer based in Tokyo, Japan. Specializing in concert, portrait, and lifestyle photography.",
+  metadataBase: new URL('https://live-portfolio-omega.vercel.app'),
   openGraph: {
     title: "Keisuke Sunagare | Live Music Photographer",
     description: "Capturing the raw energy of live music. Tokyo based, world ready.",
-    url: "https://keisukesunagare.com",
+    url: "https://live-portfolio-omega.vercel.app",
     siteName: "Keisuke Sunagare Portfolio",
     images: [
       {
         url: "/images/og-image.jpg", // We should ideally create this
         width: 1200,
         height: 630,
-        alt: "Keisuke Sunagare Portfolio",
+        alt: "Keisuke Sunagare Portfolio - Live Music Photography",
       },
     ],
     locale: "en_US",
@@ -32,7 +33,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Keisuke Sunagare | Live Music Photographer",
     description: "Capturing the raw energy of live music. Tokyo based, world ready.",
-    creator: "@keisukesunagare", // Placeholder
+    images: ["/images/og-image.jpg"],
   },
 };
 
