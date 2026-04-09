@@ -1,13 +1,20 @@
 import type { Metadata } from "next";
 import { Mail, Instagram, Twitter } from 'lucide-react';
 import ContactForm from '../../components/ContactForm';
+import { getContactInfo } from '@/lib/kuroco';
 
 export const metadata: Metadata = {
     title: "Contact",
     description: "Get in touch with Keisuke Sunagare for photography assignments and collaborations.",
 };
 
-export default function Contact() {
+export default async function Contact() {
+    const contact = await getContactInfo();
+    const email = contact.email ?? "nagare0313@gmail.com";
+    const instagram = contact.instagram ?? "https://www.instagram.com/nagare0313/";
+    const x = contact.x ?? "https://x.com/nagare0313";
+    const tagline = contact.location_tagline ?? "Available for assignments worldwide. Based in Tokyo, Japan.";
+
     return (
         <div className="container mx-auto px-4 py-12 md:py-24">
             <h1 className="text-6xl md:text-8xl font-bold font-oswald mb-12 uppercase tracking-tighter">
@@ -18,21 +25,20 @@ export default function Contact() {
                 {/* Contact Info */}
                 <div className="space-y-8">
                     <p className="text-xl md:text-2xl font-light leading-relaxed text-gray-300">
-                        Available for assignments worldwide. <br />
-                        Based in Tokyo, Japan.
+                        {tagline}
                     </p>
 
                     <div className="space-y-4">
                         <a
-                            href="mailto:nagare0313@gmail.com"
+                            href={`mailto:${email}`}
                             className="flex items-center gap-3 text-lg hover:text-white transition-colors group"
                         >
                             <Mail className="w-5 h-5 text-gray-400 group-hover:text-white transition-colors" />
-                            nagare0313@gmail.com
+                            {email}
                         </a>
                         <div className="flex gap-6 pt-4">
                             <a
-                                href="https://www.instagram.com/nagare0313/"
+                                href={instagram}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="text-gray-400 hover:text-white transition-colors"
@@ -41,7 +47,7 @@ export default function Contact() {
                                 <Instagram className="w-6 h-6" />
                             </a>
                             <a
-                                href="https://x.com/nagare0313"
+                                href={x}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="text-gray-400 hover:text-white transition-colors"

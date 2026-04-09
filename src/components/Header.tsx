@@ -6,13 +6,15 @@ import { useState, useEffect } from "react";
 import { Menu, X, Instagram, Twitter } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
-const navItems = [
+const defaultNavItems = [
     { name: "Portfolio", href: "/" },
     { name: "About", href: "/about" },
     { name: "Contact", href: "/contact" },
 ];
 
-export default function Header() {
+type NavItem = { name: string; href: string };
+
+export default function Header({ navItems = defaultNavItems }: { navItems?: NavItem[] }) {
     const pathname = usePathname();
     const [isScrolled, setIsScrolled] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);

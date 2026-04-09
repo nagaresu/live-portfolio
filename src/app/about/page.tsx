@@ -1,12 +1,19 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import { getProfile, getWorkItems } from "@/lib/kuroco";
 
 export const metadata: Metadata = {
     title: "About",
     description: "Learn more about Keisuke Sunagare, a professional photographer based in Tokyo.",
 };
 
-export default function About() {
+export default async function About() {
+    const profile = await getProfile();
+    const title = profile.title ?? "永遠の後輩";
+    const bio = profile.bio ?? "";
+    const tagline = profile.tagline ?? "広報・ライター・カメラマン";
+    const workItems = getWorkItems(profile);
+
     return (
         <div className="container mx-auto px-4 py-12 md:py-24">
             <h1 className="text-6xl md:text-8xl font-bold font-oswald mb-12 uppercase tracking-tighter">
@@ -18,36 +25,32 @@ export default function About() {
                 <div className="space-y-8">
                     <div>
                         <h2 className="text-3xl font-bold font-oswald mb-4 uppercase tracking-tight">
-                            「永遠の後輩」
+                            「{title}」
                         </h2>
                         <p className="text-lg leading-relaxed text-gray-300">
-                            企業のPR・広報担当／ライター／カメラマン。宇宙ベンチャー「天地人」のPR責任者や、国内最大のスタートアップイベント「IVS」のPR、RIP SLYMEのライブ写真や動画の担当をしています。スプラトゥーン3の攻略本も書きました。宣伝会議 Web広報講座の講師もやっています｡仕事のスタイルは「スタートアップからメガバンクまで」、持ち味は「永遠の後輩」です。
+                            {bio}
                         </p>
                     </div>
 
                     <div>
                         <h3 className="text-xl font-bold font-oswald mb-4 uppercase tracking-tight">
-                            Main Roles
+                            Tagline
                         </h3>
-                        <ul className="space-y-2 text-gray-300">
-                            <li>• PR・広報担当</li>
-                            <li>• ライター</li>
-                            <li>• カメラマン</li>
-                            <li>• 宣伝会議 Web広報講座 講師</li>
-                        </ul>
+                        <p className="text-gray-300">{tagline}</p>
                     </div>
 
-                    <div>
-                        <h3 className="text-xl font-bold font-oswald mb-4 uppercase tracking-tight">
-                            Notable Work
-                        </h3>
-                        <ul className="space-y-2 text-gray-300">
-                            <li>• 天地人 PR責任者</li>
-                            <li>• IVS PR</li>
-                            <li>• RIP SLYME ライブ写真・動画担当</li>
-                            <li>• スプラトゥーン3 攻略本 執筆</li>
-                        </ul>
-                    </div>
+                    {workItems.length > 0 && (
+                        <div>
+                            <h3 className="text-xl font-bold font-oswald mb-4 uppercase tracking-tight">
+                                Notable Work
+                            </h3>
+                            <ul className="space-y-2 text-gray-300">
+                                {workItems.map((item, i) => (
+                                    <li key={i}>• {item}</li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
                 </div>
 
                 {/* Profile Photo */}
