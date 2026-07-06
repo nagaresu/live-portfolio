@@ -6,100 +6,65 @@ import { useState, useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import photosV2 from "@/data/photos.v2.json";
 
-// 軽量な派生画像(site/)を配信。src=表示用(1600px) / thumbnail=サムネ(480px)。
-// meta.date はイベント日付（Lightbox/PhotoItemが参照）。
-const photoMetadata = photosV2.map((p) => ({ ...p, meta: { date: p.date ?? undefined } }));
+// ライブ写真のみを配信。src=表示用(1600px) / thumbnail=サムネ(480px) / width,height=実寸(比率保持用)。
+const photos = photosV2.map((p) => ({ ...p, meta: { date: p.date ?? undefined } }));
 
-const INITIAL_LOAD = 60;
-const LOAD_MORE = 30;
-
-type Category = 'live' | 'daily';
+const INITIAL_LOAD = 48;
+const LOAD_MORE = 24;
 
 export default function Home() {
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState<number | null>(null);
   const [visibleCount, setVisibleCount] = useState(INITIAL_LOAD);
-  const [activeCategory, setActiveCategory] = useState<Category>('live');
+  const [ordered, setOrdered] = useState<typeof photos>([]);
 
-  const [shuffledPhotos, setShuffledPhotos] = useState<typeof photoMetadata>([]);
+  const { ref, inView } = useInView({ threshold: 0, triggerOnce: false });
 
-  const { ref, inView } = useInView({
-    threshold: 0,
-    triggerOnce: false,
-  });
-
-  // Fisher-Yates shuffle algorithm
-  const shuffleArray = (array: typeof photoMetadata) => {
-    const newArray = [...array];
-    for (let i = newArray.length - 1; i > 0; i--) {
+  // 初回マウント時に一度だけシャッフル（表示のたびに変わらないよう1回で固定）
+  useEffect(() => {
+    const arr = [...photos];
+    for (let i = arr.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
-      [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+      [arr[i], arr[j]] = [arr[j], arr[i]];
     }
-    return newArray;
-  };
+    setOrdered(arr);
+  }, []);
 
-  // Filter and shuffle photos when category changes
   useEffect(() => {
-    const filtered = photoMetadata.filter(photo => {
-      return photo.category === activeCategory;
-    });
-    setShuffledPhotos(shuffleArray(filtered));
-    setVisibleCount(INITIAL_LOAD);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [activeCategory]);
-
-  // Load more photos when bottom sentinel comes into view
-  useEffect(() => {
-    if (inView && visibleCount < shuffledPhotos.length) {
-      setVisibleCount((prev) => Math.min(prev + LOAD_MORE, shuffledPhotos.length));
+    if (inView && visibleCount < ordered.length) {
+      setVisibleCount((prev) => Math.min(prev + LOAD_MORE, ordered.length));
     }
-  }, [inView, visibleCount, shuffledPhotos.length]);
+  }, [inView, visibleCount, ordered.length]);
 
-  const visiblePhotos = shuffledPhotos.slice(0, visibleCount);
-  const hasMore = visibleCount < shuffledPhotos.length;
+  const visiblePhotos = ordered.slice(0, visibleCount);
+  const hasMore = visibleCount < ordered.length;
 
   const handleNext = () => {
-    setSelectedPhotoIndex((prev) => (prev === null || prev === shuffledPhotos.length - 1 ? 0 : prev + 1));
+    setSelectedPhotoIndex((prev) => (prev === null || prev === ordered.length - 1 ? 0 : prev + 1));
   };
-
   const handlePrev = () => {
-    setSelectedPhotoIndex((prev) => (prev === null || prev === 0 ? shuffledPhotos.length - 1 : prev - 1));
+    setSelectedPhotoIndex((prev) => (prev === null || prev === 0 ? ordered.length - 1 : prev - 1));
   };
 
   return (
     <div className="flex flex-col pt-4">
-      {/* Category Filter Tabs */}
-      <div className="flex justify-center gap-8 mb-8 sticky top-[80px] z-40 py-4 bg-white/90 backdrop-blur-sm">
-        {(['live', 'daily'] as Category[]).map((cat) => (
-          <button
-            key={cat}
-            onClick={() => setActiveCategory(cat)}
-            className={`text-sm font-bold uppercase tracking-widest transition-colors ${activeCategory === cat
-              ? "text-black border-b-2 border-red-600"
-              : "text-gray-400 hover:text-black"
-              }`}
-          >
-            {cat}
-          </button>
-        ))}
-      </div>
-
-      {/* Masonry Layout - Forced High Density */}
-      <div className="columns-3 sm:columns-4 md:columns-5 lg:columns-6 xl:columns-7 gap-2 space-y-2 mb-12 px-2">
+      {/* 実アスペクト比のmasonry。縦写真もトリミングせず本来の縦長で配置される。
+          列密度を下げて（最大5列）縦写真が小さくなりすぎないようにする。 */}
+      <div className="columns-2 sm:columns-3 lg:columns-4 xl:columns-5 gap-3 space-y-3 mb-12 px-2">
         {visiblePhotos.map((photo, index) => (
           <PhotoItem
             key={`${photo.src}-${index}`}
             src={photo.src}
-            thumbnailSrc={photo.thumbnail} // Pass thumbnail path
+            thumbnailSrc={photo.thumbnail}
             alt={photo.alt}
+            width={photo.width}
+            height={photo.height}
             meta={photo.meta}
-            orientation={photo.orientation as "vertical" | "horizontal"}
-            priority={index < 12}
+            priority={index < 8}
             onClick={() => setSelectedPhotoIndex(index)}
           />
         ))}
       </div>
 
-      {/* Loading Indicator / Sentinel */}
       {hasMore && (
         <div ref={ref} className="flex justify-center py-12 mb-12">
           <div className="flex items-center gap-2 text-gray-400">
@@ -110,7 +75,7 @@ export default function Home() {
         </div>
       )}
 
-      {!hasMore && (
+      {!hasMore && ordered.length > 0 && (
         <div className="text-center mb-24">
           <a href="/contact" className="inline-block border-2 border-black px-12 py-4 text-sm font-bold uppercase tracking-widest hover:bg-black hover:text-white transition-colors">
             Get in Touch
@@ -118,9 +83,8 @@ export default function Home() {
         </div>
       )}
 
-      {/* Lightbox */}
       <Lightbox
-        photo={selectedPhotoIndex !== null ? shuffledPhotos[selectedPhotoIndex] : null}
+        photo={selectedPhotoIndex !== null ? ordered[selectedPhotoIndex] : null}
         onClose={() => setSelectedPhotoIndex(null)}
         onNext={handleNext}
         onPrev={handlePrev}
