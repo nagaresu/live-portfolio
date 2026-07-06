@@ -54,7 +54,7 @@ export default async function RootLayout({
           </div>
         </main>
         <footer className="py-12 text-center text-xs tracking-widest text-gray-400 uppercase">
-          © 2025 Keisuke Sunagare. All Rights Reserved.
+          © {new Date().getFullYear()} Keisuke Sunagare. All Rights Reserved.
         </footer>
       </body>
     </html>

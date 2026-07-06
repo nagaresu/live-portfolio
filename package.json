@@ -15,7 +15,8 @@
     "next": "^16.2.3",
     "react": "19.2.0",
     "react-dom": "19.2.0",
-    "react-intersection-observer": "^10.0.0"
+    "react-intersection-observer": "^10.0.0",
+    "resend": "^6.17.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

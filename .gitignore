@@ -39,3 +39,6 @@ public/images/portfolio/live/*.png
 
 # Zip files
 *.zip
+
+# keep the example env (real .env* stays ignored)
+!.env.local.example

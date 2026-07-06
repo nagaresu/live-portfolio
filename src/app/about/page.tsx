@@ -27,7 +27,7 @@ export default async function About() {
                         <h2 className="text-3xl font-bold font-oswald mb-4 uppercase tracking-tight">
                             「{title}」
                         </h2>
-                        <p className="text-lg leading-relaxed text-gray-300">
+                        <p className="text-lg leading-relaxed text-gray-800">
                             {bio}
                         </p>
                     </div>
@@ -36,7 +36,7 @@ export default async function About() {
                         <h3 className="text-xl font-bold font-oswald mb-4 uppercase tracking-tight">
                             Tagline
                         </h3>
-                        <p className="text-gray-300">{tagline}</p>
+                        <p className="text-gray-800">{tagline}</p>
                     </div>
 
                     {workItems.length > 0 && (
@@ -44,7 +44,7 @@ export default async function About() {
                             <h3 className="text-xl font-bold font-oswald mb-4 uppercase tracking-tight">
                                 Notable Work
                             </h3>
-                            <ul className="space-y-2 text-gray-300">
+                            <ul className="space-y-2 text-gray-800">
                                 {workItems.map((item, i) => (
                                     <li key={i}>• {item}</li>
                                 ))}
@@ -54,7 +54,7 @@ export default async function About() {
                 </div>
 
                 {/* Profile Photo */}
-                <div className="relative aspect-[3/4] bg-gray-900 overflow-hidden">
+                <div className="relative aspect-[3/4] bg-gray-100 overflow-hidden">
                     <Image
                         src="/images/profile.jpg"
                         alt="Keisuke Sunagare"
