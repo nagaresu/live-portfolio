@@ -27,15 +27,9 @@ npm-debug.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# Large original images (keep only optimized)
-public/images/portfolio/daily/*.jpg
-public/images/portfolio/daily/*.jpeg
-public/images/portfolio/daily/*.png
-public/images/portfolio/live/*.jpg
-public/images/portfolio/live/*.jpeg
-public/images/portfolio/live/*.png
-!public/images/portfolio/*/optimized/
-!public/images/portfolio/*/thumbnails/
+# 元画像(originals)はgit管理しない。配信は派生セット public/images/site/ のみ。
+# 元画像はディスク(Dropbox/NAS)に残す＝原本アーカイブ。build-assets.mjs の入力。
+public/images/portfolio/
 
 # Zip files
 *.zip

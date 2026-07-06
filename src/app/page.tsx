@@ -4,7 +4,11 @@ import PhotoItem from "@/components/PhotoItem";
 import Lightbox from "@/components/Lightbox";
 import { useState, useEffect } from "react";
 import { useInView } from "react-intersection-observer";
-import photoMetadata from "@/data/photo-metadata.json";
+import photosV2 from "@/data/photos.v2.json";
+
+// 軽量な派生画像(site/)を配信。src=表示用(1600px) / thumbnail=サムネ(480px)。
+// meta.date はイベント日付（Lightbox/PhotoItemが参照）。
+const photoMetadata = photosV2.map((p) => ({ ...p, meta: { date: p.date ?? undefined } }));
 
 const INITIAL_LOAD = 60;
 const LOAD_MORE = 30;
