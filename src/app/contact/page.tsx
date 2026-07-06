@@ -1,19 +1,15 @@
 import type { Metadata } from "next";
 import { Mail, Instagram, Twitter } from 'lucide-react';
 import ContactForm from '../../components/ContactForm';
-import { getContactInfo } from '@/lib/kuroco';
+import { CONTACT } from "@/content/profile";
 
 export const metadata: Metadata = {
     title: "Contact",
     description: "Get in touch with Keisuke Sunagare for photography assignments and collaborations.",
 };
 
-export default async function Contact() {
-    const contact = await getContactInfo();
-    const email = contact.email ?? "nagare0313@gmail.com";
-    const instagram = contact.instagram ?? "https://www.instagram.com/nagare0313/";
-    const x = contact.x ?? "https://x.com/nagare0313";
-    const tagline = contact.location_tagline ?? "Available for assignments worldwide. Based in Tokyo, Japan.";
+export default function Contact() {
+    const { email, instagram, x, locationTagline: tagline } = CONTACT;
 
     return (
         <div className="container mx-auto px-4 py-12 md:py-24">

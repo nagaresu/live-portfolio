@@ -1,18 +1,14 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { getProfile, getWorkItems } from "@/lib/kuroco";
+import { PROFILE } from "@/content/profile";
 
 export const metadata: Metadata = {
     title: "About",
     description: "Learn more about Keisuke Sunagare, a professional photographer based in Tokyo.",
 };
 
-export default async function About() {
-    const profile = await getProfile();
-    const title = profile.title ?? "永遠の後輩";
-    const bio = profile.bio ?? "";
-    const tagline = profile.tagline ?? "広報・ライター・カメラマン";
-    const workItems = getWorkItems(profile);
+export default function About() {
+    const { title, bio, tagline, workItems } = PROFILE;
 
     return (
         <div className="container mx-auto px-4 py-12 md:py-24">

@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Inter, Oswald } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
-import { getNavigation } from "@/lib/kuroco";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const oswald = Oswald({ subsets: ["latin"], variable: "--font-oswald" });
@@ -38,16 +37,15 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const navItems = await getNavigation();
   return (
     <html lang="en">
       <body className={`${oswald.variable} ${inter.variable} font-sans bg-white text-black`}>
-        <Header navItems={navItems.length ? navItems : undefined} />
+        <Header />
         <main className="pt-24 min-h-screen">
           <div className="w-full px-4 md:px-8">
             {children}
