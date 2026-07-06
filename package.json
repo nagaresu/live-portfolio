@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "review:photos": "node scripts/review-photos.js"
   },
   "dependencies": {
     "exifreader": "^4.32.0",
