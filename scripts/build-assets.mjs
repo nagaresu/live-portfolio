@@ -80,7 +80,10 @@ async function processOne(entry) {
 }
 
 async function main() {
-    const meta = JSON.parse(await fs.readFile(META, 'utf8'));
+    const rawMeta = JSON.parse(await fs.readFile(META, 'utf8'));
+    // dedup: photo-metadata.json は同一写真を optimized/ と thumbnails/ に二重登録している。
+    // thumbnails/ 配下は optimized/ の縮小コピーなので除外し、ユニーク1枚だけ扱う（1972→1186）。
+    const meta = rawMeta.filter((p) => !p.src.includes('/thumbnails/'));
     const results = new Array(meta.length);
     let done = 0, built = 0, errors = 0, unparsed = 0;
 
