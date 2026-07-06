@@ -18,6 +18,8 @@ export default function Header({ navItems = defaultNavItems }: { navItems?: NavI
     const pathname = usePathname();
     const [isScrolled, setIsScrolled] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    // トップ最上部（未スクロール）はヒーロー画像の上に乗るので文字を白にする。About/Contactは無影響。
+    const onDark = pathname === "/" && !isScrolled;
 
     useEffect(() => {
         const handleScroll = () => {
@@ -35,10 +37,10 @@ export default function Header({ navItems = defaultNavItems }: { navItems?: NavI
             <div className="max-w-[1800px] mx-auto px-6 md:px-12 flex justify-between items-center">
                 {/* Logo */}
                 <Link href="/" className="group">
-                    <h1 className="font-oswald text-3xl md:text-4xl font-bold tracking-tighter uppercase leading-none">
+                    <h1 className={`font-oswald text-3xl md:text-4xl font-bold tracking-tighter uppercase leading-none transition-colors ${onDark ? "text-white" : "text-black"}`}>
                         Sunagare<span className="text-red-600">.</span>
                     </h1>
-                    <p className="text-[10px] tracking-[0.3em] text-gray-500 uppercase font-medium group-hover:text-black transition-colors">
+                    <p className={`text-[10px] tracking-[0.3em] uppercase font-medium transition-colors ${onDark ? "text-white/70 group-hover:text-white" : "text-gray-500 group-hover:text-black"}`}>
                         Music Photographer
                     </p>
                 </Link>
@@ -49,21 +51,23 @@ export default function Header({ navItems = defaultNavItems }: { navItems?: NavI
                         <Link
                             key={item.href}
                             href={item.href}
-                            className={`text-sm font-bold uppercase tracking-widest hover:text-red-600 transition-colors ${pathname === item.href ? "text-black border-b-2 border-red-600" : "text-gray-500"
+                            className={`text-sm font-bold uppercase tracking-widest hover:text-red-600 transition-colors ${pathname === item.href
+                                ? (onDark ? "text-white border-b-2 border-red-600" : "text-black border-b-2 border-red-600")
+                                : (onDark ? "text-white/80" : "text-gray-500")
                                 }`}
                         >
                             {item.name}
                         </Link>
                     ))}
-                    <div className="flex gap-4 border-l border-gray-200 pl-8">
-                        <a href="https://www.instagram.com/nagare0313/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-black transition-colors" aria-label="Instagram"><Instagram size={18} /></a>
-                        <a href="https://x.com/nagare0313" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-black transition-colors" aria-label="X (Twitter)"><Twitter size={18} /></a>
+                    <div className={`flex gap-4 border-l pl-8 ${onDark ? "border-white/30" : "border-gray-200"}`}>
+                        <a href="https://www.instagram.com/nagare0313/" target="_blank" rel="noopener noreferrer" className={`transition-colors ${onDark ? "text-white/70 hover:text-white" : "text-gray-400 hover:text-black"}`} aria-label="Instagram"><Instagram size={18} /></a>
+                        <a href="https://x.com/nagare0313" target="_blank" rel="noopener noreferrer" className={`transition-colors ${onDark ? "text-white/70 hover:text-white" : "text-gray-400 hover:text-black"}`} aria-label="X (Twitter)"><Twitter size={18} /></a>
                     </div>
                 </nav>
 
                 {/* Mobile Menu Button */}
                 <button
-                    className="md:hidden text-black"
+                    className={`md:hidden transition-colors ${onDark ? "text-white" : "text-black"}`}
                     onClick={() => setMobileMenuOpen(true)}
                 >
                     <Menu size={28} />

@@ -9,6 +9,13 @@ import photosV2 from "@/data/photos.v2.json";
 // ライブ写真のみを配信。src=表示用(1600px) / thumbnail=サムネ(480px) / width,height=実寸(比率保持用)。
 const photos = photosV2.map((p) => ({ ...p, meta: { date: p.date ?? undefined } }));
 
+// ▼ トップの「顔となる1枚」。差し替えたいときはこのパスを /images/site/display/... の好きな写真に変えるだけ。
+//   既定は社会共有用に選んだOG画像（＝本人が代表として選んだ1枚）。
+const HERO_IMAGE = "/images/og-image.jpg";
+// ▼ キャッチ。既存のOGコピー（本人の既存文言）をそのまま使用。変えたいときはここ。
+const HERO_EYEBROW = "Live Music Photographer — Tokyo";
+const HERO_HEADLINE = "Capturing the raw energy of live music";
+
 const INITIAL_LOAD = 48;
 const LOAD_MORE = 24;
 
@@ -46,10 +53,35 @@ export default function Home() {
   };
 
   return (
-    <div className="flex flex-col pt-4">
+    <div className="flex flex-col">
+      {/* ▼ ヒーロー：顔となる1枚＋キャッチ。ヘッダーの下まで全幅で敷く（-mt-24 -mx でlayoutのpadding相殺）。 */}
+      <section className="relative -mt-24 -mx-4 md:-mx-8 h-[88vh] min-h-[540px] overflow-hidden bg-black">
+        <img
+          src={HERO_IMAGE}
+          alt="Keisuke Sunagare — live music photography"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        {/* 上：ヘッダー文字の可読性用 ／ 下：キャッチの可読性用 */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
+        <div className="absolute inset-x-0 bottom-0">
+          <div className="max-w-[1800px] mx-auto px-6 md:px-12 pb-16 md:pb-24">
+            <p className="text-white/75 text-[11px] md:text-sm tracking-[0.3em] uppercase mb-4">
+              {HERO_EYEBROW}
+            </p>
+            <h1 className="text-white font-oswald font-bold uppercase leading-[0.95] tracking-tight text-4xl md:text-6xl lg:text-7xl max-w-4xl">
+              {HERO_HEADLINE}
+            </h1>
+          </div>
+        </div>
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white/60 text-[10px] tracking-[0.3em] uppercase">
+          Scroll
+        </div>
+      </section>
+
       {/* 実アスペクト比のmasonry。縦写真もトリミングせず本来の縦長で配置される。
           列密度を下げて（最大5列）縦写真が小さくなりすぎないようにする。 */}
-      <div className="columns-2 sm:columns-3 lg:columns-4 xl:columns-5 gap-3 space-y-3 mb-12 px-2">
+      <div className="columns-2 sm:columns-3 lg:columns-4 xl:columns-5 gap-3 space-y-3 mt-12 mb-12 px-2">
         {visiblePhotos.map((photo, index) => (
           <PhotoItem
             key={`${photo.src}-${index}`}
