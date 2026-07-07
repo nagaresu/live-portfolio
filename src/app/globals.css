@@ -8,9 +8,21 @@
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: var(--font-inter), sans-serif;
+  /* 欧文=Inter、日本語=Noto Sans JP にフォールバック（和欧混植） */
+  font-family: var(--font-inter), var(--font-noto-jp), sans-serif;
 }
 
 .font-oswald {
   font-family: var(--font-oswald), sans-serif;
+}
+
+/* 動きを減らす設定（prefers-reduced-motion）を尊重：CSSのトランジション/アニメを実質停止。
+   framer-motion側は layout.tsx の <MotionConfig reducedMotion="user"> で同時に尊重する。 */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }

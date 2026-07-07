@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
-import { Inter, Oswald } from "next/font/google";
+import { Inter, Oswald, Noto_Sans_JP } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
+import Providers from "./providers";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const oswald = Oswald({ subsets: ["latin"], variable: "--font-oswald" });
+// 和文書体：Aboutの日本語などが環境依存フォントで崩れないよう明示。日本語グリフは巨大なので preload:false。
+const notoJP = Noto_Sans_JP({ subsets: ["latin"], weight: ["400", "500", "700"], variable: "--font-noto-jp", preload: false });
 
 export const metadata: Metadata = {
   title: {
@@ -44,16 +47,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${oswald.variable} ${inter.variable} font-sans bg-white text-black`}>
-        <Header />
-        <main className="pt-24 min-h-screen">
-          <div className="w-full px-4 md:px-8">
-            {children}
-          </div>
-        </main>
-        <footer className="py-12 text-center text-xs tracking-widest text-gray-400 uppercase">
-          © {new Date().getFullYear()} Keisuke Sunagare. All Rights Reserved.
-        </footer>
+      <body className={`${oswald.variable} ${inter.variable} ${notoJP.variable} font-sans bg-white text-black`}>
+        <Providers>
+          <Header />
+          <main className="pt-24 min-h-screen">
+            <div className="w-full px-4 md:px-8">
+              {children}
+            </div>
+          </main>
+          <footer className="py-12 text-center text-xs tracking-widest text-gray-400 uppercase">
+            © {new Date().getFullYear()} Keisuke Sunagare. All Rights Reserved.
+          </footer>
+        </Providers>
       </body>
     </html>
   );
