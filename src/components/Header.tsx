@@ -3,8 +3,17 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
-import { Menu, X, Instagram, Twitter } from "lucide-react";
+import { Menu, X, Instagram } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+
+// X（旧Twitter）の公式ロゴ。lucideのTwitterは旧・鳥アイコンなので自前SVGに置換。
+function XLogo({ className }: { className?: string }) {
+    return (
+        <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden="true">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+        </svg>
+    );
+}
 
 const defaultNavItems = [
     { name: "Portfolio", href: "/" },
@@ -61,7 +70,7 @@ export default function Header({ navItems = defaultNavItems }: { navItems?: NavI
                     ))}
                     <div className={`flex gap-4 border-l pl-8 ${onDark ? "border-white/30" : "border-gray-200"}`}>
                         <a href="https://www.instagram.com/nagare0313/" target="_blank" rel="noopener noreferrer" className={`transition-colors ${onDark ? "text-white/70 hover:text-white" : "text-gray-400 hover:text-black"}`} aria-label="Instagram"><Instagram size={18} /></a>
-                        <a href="https://x.com/nagare0313" target="_blank" rel="noopener noreferrer" className={`transition-colors ${onDark ? "text-white/70 hover:text-white" : "text-gray-400 hover:text-black"}`} aria-label="X (Twitter)"><Twitter size={18} /></a>
+                        <a href="https://x.com/nagare0313" target="_blank" rel="noopener noreferrer" className={`transition-colors ${onDark ? "text-white/70 hover:text-white" : "text-gray-400 hover:text-black"}`} aria-label="X (Twitter)"><XLogo className="w-[17px] h-[17px]" /></a>
                     </div>
                 </nav>
 
@@ -119,7 +128,7 @@ export default function Header({ navItems = defaultNavItems }: { navItems?: NavI
                                 className="text-gray-400 hover:text-black transition-colors"
                                 aria-label="X (Twitter)"
                             >
-                                <Twitter className="w-8 h-8" />
+                                <XLogo className="w-7 h-7" />
                             </a>
                         </div>
                     </motion.div>
