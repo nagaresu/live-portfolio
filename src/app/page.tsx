@@ -10,8 +10,8 @@ import photosV2 from "@/data/photos.v2.json";
 const photos = photosV2.map((p) => ({ ...p, meta: { date: p.date ?? undefined } }));
 
 // ▼ トップの「顔となる1枚」。差し替えたいときはこのパスを /images/site/display/... の好きな写真に変えるだけ。
-//   既定は社会共有用に選んだOG画像（＝本人が代表として選んだ1枚）。
-const HERO_IMAGE = "/images/og-image.jpg";
+//   砂流さん選定：RIP SLYME @ RISING SUN ROCK FESTIVAL 2025 in EZO（2_DSC02521）。
+const HERO_IMAGE = "/images/site/display/live/20250815_RISING_SUN_ROCK_FESTIVAL_2025_in_EZO/2_DSC02521.jpg";
 // ▼ キャッチ。既存のOGコピー（本人の既存文言）をそのまま使用。変えたいときはここ。
 const HERO_EYEBROW = "Live Music Photographer — Tokyo";
 const HERO_HEADLINE = "Capturing the raw energy of live music";
