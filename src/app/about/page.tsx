@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { PROFILE } from "@/content/profile";
 
 export const metadata: Metadata = {
@@ -23,7 +22,7 @@ export default function About() {
                         <h2 className="text-3xl font-bold font-oswald mb-4 uppercase tracking-tight">
                             「{title}」
                         </h2>
-                        <p className="text-lg leading-relaxed text-gray-800">
+                        <p className="text-lg leading-relaxed text-neutral-300">
                             {bio}
                         </p>
                     </div>
@@ -32,7 +31,7 @@ export default function About() {
                         <h3 className="text-xl font-bold font-oswald mb-4 uppercase tracking-tight">
                             Tagline
                         </h3>
-                        <p className="text-gray-800">{tagline}</p>
+                        <p className="text-neutral-300">{tagline}</p>
                     </div>
 
                     {workItems.length > 0 && (
@@ -40,7 +39,7 @@ export default function About() {
                             <h3 className="text-xl font-bold font-oswald mb-4 uppercase tracking-tight">
                                 Notable Work
                             </h3>
-                            <ul className="space-y-2 text-gray-800">
+                            <ul className="space-y-2 text-neutral-300">
                                 {workItems.map((item, i) => (
                                     <li key={i}>• {item}</li>
                                 ))}
@@ -50,13 +49,12 @@ export default function About() {
                 </div>
 
                 {/* Profile Photo */}
-                <div className="relative aspect-[3/4] bg-gray-100 overflow-hidden">
-                    <Image
+                <div className="relative aspect-[3/4] bg-neutral-900 overflow-hidden">
+                    {/* next/image(fill+unoptimized)がロードされない既存バグのため素のimgに置換 */}
+                    <img
                         src="/images/profile.jpg"
                         alt="Keisuke Sunagare"
-                        fill
-                        className="object-cover grayscale hover:grayscale-0 transition-all duration-500"
-                        sizes="(max-width: 768px) 100vw, 50vw"
+                        className="absolute inset-0 w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
                     />
                 </div>
             </div>

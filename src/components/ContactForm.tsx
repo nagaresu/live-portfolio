@@ -40,7 +40,7 @@ export default function ContactForm() {
             />
 
             <div className="space-y-2">
-                <label htmlFor="name" className="text-sm font-medium text-gray-600 uppercase tracking-wide">
+                <label htmlFor="name" className="text-sm font-medium text-neutral-400 uppercase tracking-wide">
                     Name
                 </label>
                 <input
@@ -48,13 +48,13 @@ export default function ContactForm() {
                     id="name"
                     name="name"
                     required
-                    className="w-full bg-white border border-gray-300 rounded-sm p-3 text-black focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition-all"
+                    className="w-full bg-neutral-950 border border-white/15 rounded-sm p-3 text-white placeholder:text-neutral-500 focus:outline-none focus:ring-1 focus:ring-white focus:border-white transition-all"
                     placeholder="Your Name"
                 />
             </div>
 
             <div className="space-y-2">
-                <label htmlFor="email" className="text-sm font-medium text-gray-600 uppercase tracking-wide">
+                <label htmlFor="email" className="text-sm font-medium text-neutral-400 uppercase tracking-wide">
                     Email
                 </label>
                 <input
@@ -62,13 +62,13 @@ export default function ContactForm() {
                     id="email"
                     name="email"
                     required
-                    className="w-full bg-white border border-gray-300 rounded-sm p-3 text-black focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition-all"
+                    className="w-full bg-neutral-950 border border-white/15 rounded-sm p-3 text-white placeholder:text-neutral-500 focus:outline-none focus:ring-1 focus:ring-white focus:border-white transition-all"
                     placeholder="your@email.com"
                 />
             </div>
 
             <div className="space-y-2">
-                <label htmlFor="message" className="text-sm font-medium text-gray-600 uppercase tracking-wide">
+                <label htmlFor="message" className="text-sm font-medium text-neutral-400 uppercase tracking-wide">
                     Message
                 </label>
                 <textarea
@@ -76,14 +76,14 @@ export default function ContactForm() {
                     name="message"
                     required
                     rows={5}
-                    className="w-full bg-white border border-gray-300 rounded-sm p-3 text-black focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition-all resize-none"
+                    className="w-full bg-neutral-950 border border-white/15 rounded-sm p-3 text-white placeholder:text-neutral-500 focus:outline-none focus:ring-1 focus:ring-white focus:border-white transition-all resize-none"
                     placeholder="Tell me about your project..."
                 />
             </div>
 
             {message && (
                 <div
-                    className={`p-3 rounded text-sm ${message.type === 'success' ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'
+                    className={`p-3 rounded text-sm ${message.type === 'success' ? 'bg-green-500/15 text-green-300' : 'bg-red-500/15 text-red-300'
                         }`}
                 >
                     {message.text}
@@ -93,13 +93,13 @@ export default function ContactForm() {
             <button
                 type="submit"
                 disabled={pending}
-                className="w-full bg-black text-white font-bold uppercase tracking-wide py-4 hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-white text-black font-bold uppercase tracking-wide py-4 hover:bg-neutral-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
                 {pending ? 'Sending...' : 'Send Message'}
             </button>
 
-            <p className="text-xs text-gray-500 text-center">
-                Prefer email? <a href="mailto:nagare0313@gmail.com" className="underline hover:text-black transition-colors">nagare0313@gmail.com</a>
+            <p className="text-xs text-neutral-500 text-center">
+                Prefer email? <a href="mailto:nagare0313@gmail.com" className="underline hover:text-white transition-colors">nagare0313@gmail.com</a>
             </p>
         </form>
     );

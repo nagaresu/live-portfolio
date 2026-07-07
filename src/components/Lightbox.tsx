@@ -1,7 +1,6 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import Image from "next/image";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
 import { useEffect, useRef } from "react";
 
@@ -87,14 +86,12 @@ export default function Lightbox({ photo, onClose, onNext, onPrev }: LightboxPro
                         className="relative w-full h-full max-w-7xl max-h-[90vh] flex flex-col items-center justify-center"
                         onClick={(e) => e.stopPropagation()}
                     >
-                        <div className="relative w-full h-full">
-                            <Image
+                        <div className="relative w-full h-full flex items-center justify-center">
+                            {/* next/image(fill+unoptimized)がロードされないため素のimgに置換 */}
+                            <img
                                 src={photo.src}
                                 alt={photo.alt}
-                                fill
-                                className="object-contain"
-                                sizes="100vw"
-                                priority
+                                className="max-w-full max-h-full object-contain"
                             />
                         </div>
 

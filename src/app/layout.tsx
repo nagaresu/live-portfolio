@@ -47,7 +47,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${oswald.variable} ${inter.variable} ${notoJP.variable} font-sans bg-white text-black`}>
+      <body className={`${oswald.variable} ${inter.variable} ${notoJP.variable} font-sans bg-[#0b0b0b] text-neutral-100`}>
         <Providers>
           <Header />
           <main className="pt-24 min-h-screen">

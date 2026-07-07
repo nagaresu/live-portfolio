@@ -32,7 +32,7 @@ export default function PhotoItem({ src, thumbnailSrc, alt, width, height, prior
             onClick={onClick}
         >
             <div
-                className="relative w-full overflow-hidden bg-gray-100"
+                className="relative w-full overflow-hidden bg-neutral-900"
                 style={{ aspectRatio: ratio }}
             >
                 <img

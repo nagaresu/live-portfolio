@@ -99,7 +99,7 @@ export default function Home() {
 
       {!hasMore && ordered.length > 0 && (
         <div className="text-center mb-24">
-          <a href="/contact" className="inline-block border-2 border-black px-12 py-4 text-sm font-bold uppercase tracking-widest hover:bg-black hover:text-white transition-colors">
+          <a href="/contact" className="inline-block border-2 border-white/80 text-white px-12 py-4 text-sm font-bold uppercase tracking-widest hover:bg-white hover:text-black transition-colors">
             Get in Touch
           </a>
         </div>
