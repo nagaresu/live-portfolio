@@ -3,7 +3,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 interface LightboxProps {
     photo: { src: string; alt: string; meta?: { location?: string; date?: string } } | null;
@@ -13,6 +13,21 @@ interface LightboxProps {
 }
 
 export default function Lightbox({ photo, onClose, onNext, onPrev }: LightboxProps) {
+    // スマホ用スワイプ：横に50px以上動いたら前後送り（下に閉じるほどではない小移動は無視）。
+    const touchStart = useRef<{ x: number; y: number } | null>(null);
+    const handleTouchStart = (e: React.TouchEvent) => {
+        touchStart.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    };
+    const handleTouchEnd = (e: React.TouchEvent) => {
+        if (!touchStart.current) return;
+        const dx = e.changedTouches[0].clientX - touchStart.current.x;
+        const dy = e.changedTouches[0].clientY - touchStart.current.y;
+        touchStart.current = null;
+        if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) {
+            if (dx < 0) onNext(); else onPrev();
+        }
+    };
+
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
             if (e.key === "Escape") onClose();
@@ -32,6 +47,8 @@ export default function Lightbox({ photo, onClose, onNext, onPrev }: LightboxPro
                     exit={{ opacity: 0 }}
                     className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-4 md:p-12"
                     onClick={onClose}
+                    onTouchStart={handleTouchStart}
+                    onTouchEnd={handleTouchEnd}
                     role="dialog"
                     aria-modal="true"
                     aria-label="Image Lightbox"
@@ -39,26 +56,26 @@ export default function Lightbox({ photo, onClose, onNext, onPrev }: LightboxPro
                     {/* Close Button */}
                     <button
                         onClick={onClose}
-                        className="absolute top-6 right-6 text-white/50 hover:text-white transition-colors z-10"
+                        className="absolute top-4 right-4 md:top-6 md:right-6 p-2 text-white/70 hover:text-white transition-colors z-10"
                         aria-label="Close lightbox"
                     >
-                        <X size={32} />
+                        <X size={28} />
                     </button>
 
-                    {/* Navigation Buttons */}
+                    {/* Navigation Buttons（スマホでも表示。スワイプでも送れる） */}
                     <button
                         onClick={(e) => { e.stopPropagation(); onPrev(); }}
-                        className="absolute left-4 md:left-8 text-white/50 hover:text-white transition-colors z-10 hidden md:block"
+                        className="absolute left-1 md:left-8 p-2 text-white/70 hover:text-white transition-colors z-10"
                         aria-label="Previous image"
                     >
-                        <ChevronLeft size={48} />
+                        <ChevronLeft className="w-9 h-9 md:w-12 md:h-12" />
                     </button>
                     <button
                         onClick={(e) => { e.stopPropagation(); onNext(); }}
-                        className="absolute right-4 md:right-8 text-white/50 hover:text-white transition-colors z-10 hidden md:block"
+                        className="absolute right-1 md:right-8 p-2 text-white/70 hover:text-white transition-colors z-10"
                         aria-label="Next image"
                     >
-                        <ChevronRight size={48} />
+                        <ChevronRight className="w-9 h-9 md:w-12 md:h-12" />
                     </button>
 
                     {/* Image Container */}
