@@ -54,15 +54,16 @@ export default function Home() {
 
   return (
     <div className="flex flex-col">
-      {/* ▼ ヒーロー：顔となる1枚＋キャッチ。ヘッダーの下まで全幅で敷く（-mt-24 -mx でlayoutのpadding相殺）。 */}
-      <section className="relative -mt-24 -mx-4 md:-mx-8 h-[88vh] min-h-[540px] overflow-hidden bg-black">
+      {/* ▼ ヒーロー：顔となる1枚。
+          スマホ＝写真全体を表示（切らない・高さ自動）／PC＝全画面のcinematic（object-coverで敷く）。 */}
+      <section className="relative -mx-4 md:-mx-8 md:-mt-24 md:h-[88vh] md:min-h-[540px] overflow-hidden bg-black">
         <img
           src={HERO_IMAGE}
           alt="Keisuke Sunagare — live music photography"
-          className="absolute inset-0 w-full h-full object-cover"
+          className="block w-full h-auto md:absolute md:inset-0 md:w-full md:h-full md:object-cover"
         />
-        {/* 上：ヘッダー文字の可読性用 ／ 下：SCROLL誘導の可読性用（軽め）。キャッチ文字は無し（写真を主役に）。 */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/45 via-transparent to-transparent" />
+        {/* 上：PCでヘッダーが写真に重なるときの文字可読性用（スマホは重ならないので不要）／下：SCROLL誘導用（軽め）。 */}
+        <div className="hidden md:block absolute inset-0 bg-gradient-to-b from-black/45 via-transparent to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent" />
         <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white/70 text-[10px] tracking-[0.3em] uppercase">
           Scroll
