@@ -12,9 +12,9 @@ const photos = photosV2.map((p) => ({ ...p, meta: { date: p.date ?? undefined } 
 // ▼ トップの「顔となる1枚」。差し替えたいときはこのパスを /images/site/display/... の好きな写真に変えるだけ。
 //   砂流さん選定：RIP SLYME @ RISING SUN ROCK FESTIVAL 2025 in EZO（2_DSC02521）。
 const HERO_IMAGE = "/images/site/display/live/20250815_RISING_SUN_ROCK_FESTIVAL_2025_in_EZO/2_DSC02521.jpg";
-// ▼ キャッチ。既存のOGコピー（本人の既存文言）をそのまま使用。変えたいときはここ。
-const HERO_EYEBROW = "Live Music Photographer — Tokyo";
-const HERO_HEADLINE = "Capturing the raw energy of live music";
+// ▼ ヒーローの文字（キャッチ）は無し＝写真を主役にする（2026-07-07 砂流さん指示）。
+//   もし文字を戻したくなったら、ここに定数を定義し、下のsection内にテキスト要素を復活させる。
+//   例: const HERO_HEADLINE = "Capturing the raw energy of live music";
 
 const INITIAL_LOAD = 48;
 const LOAD_MORE = 24;
@@ -61,20 +61,10 @@ export default function Home() {
           alt="Keisuke Sunagare — live music photography"
           className="absolute inset-0 w-full h-full object-cover"
         />
-        {/* 上：ヘッダー文字の可読性用 ／ 下：キャッチの可読性用 */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
-        <div className="absolute inset-x-0 bottom-0">
-          <div className="max-w-[1800px] mx-auto px-6 md:px-12 pb-16 md:pb-24">
-            <p className="text-white/75 text-[11px] md:text-sm tracking-[0.3em] uppercase mb-4">
-              {HERO_EYEBROW}
-            </p>
-            <h1 className="text-white font-oswald font-bold uppercase leading-[0.95] tracking-tight text-4xl md:text-6xl lg:text-7xl max-w-4xl">
-              {HERO_HEADLINE}
-            </h1>
-          </div>
-        </div>
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white/60 text-[10px] tracking-[0.3em] uppercase">
+        {/* 上：ヘッダー文字の可読性用 ／ 下：SCROLL誘導の可読性用（軽め）。キャッチ文字は無し（写真を主役に）。 */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/45 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent" />
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white/70 text-[10px] tracking-[0.3em] uppercase">
           Scroll
         </div>
       </section>
