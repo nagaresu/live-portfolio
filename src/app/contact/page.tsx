@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Mail, Instagram } from 'lucide-react';
-import ContactForm from '../../components/ContactForm';
 import XLogo from '../../components/XLogo';
 import { CONTACT } from "@/content/profile";
 
@@ -18,47 +17,44 @@ export default function Contact() {
                 Contact
             </h1>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24">
-                {/* Contact Info */}
-                <div className="space-y-8">
-                    <p className="text-xl md:text-2xl font-light leading-relaxed text-neutral-300">
-                        {tagline}
+            <div className="max-w-2xl space-y-10">
+                <p className="text-xl md:text-2xl font-light leading-relaxed text-neutral-300">
+                    {tagline}
+                </p>
+
+                <div className="space-y-6">
+                    <p className="text-neutral-400 text-xs uppercase tracking-[0.3em]">
+                        Send a DM
                     </p>
-
-                    <div className="space-y-4">
+                    {/* 連絡はX/InstagramのDMで（フォームは廃止・砂流さん指示 2026-07-08） */}
+                    <div className="flex flex-col sm:flex-row gap-4">
                         <a
-                            href={`mailto:${email}`}
-                            className="flex items-center gap-3 text-lg text-neutral-200 hover:text-white transition-colors group"
+                            href={instagram}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center justify-center gap-3 border border-white/25 px-8 py-4 text-sm font-bold uppercase tracking-widest hover:bg-white hover:text-black transition-colors"
                         >
-                            <Mail className="w-5 h-5 text-neutral-400 group-hover:text-white transition-colors" />
-                            {email}
+                            <Instagram className="w-5 h-5" />
+                            Instagram
                         </a>
-                        <div className="flex gap-6 pt-4">
-                            <a
-                                href={instagram}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-neutral-400 hover:text-white transition-colors"
-                                aria-label="Instagram"
-                            >
-                                <Instagram className="w-6 h-6" />
-                            </a>
-                            <a
-                                href={x}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-neutral-400 hover:text-white transition-colors"
-                                aria-label="X (Twitter)"
-                            >
-                                <XLogo className="w-6 h-6" />
-                            </a>
-                        </div>
+                        <a
+                            href={x}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center justify-center gap-3 border border-white/25 px-8 py-4 text-sm font-bold uppercase tracking-widest hover:bg-white hover:text-black transition-colors"
+                        >
+                            <XLogo className="w-4 h-4" />
+                            X
+                        </a>
                     </div>
-                </div>
 
-                {/* Contact Form Container */}
-                <div className="bg-neutral-900 p-8 rounded-lg border border-white/10">
-                    <ContactForm />
+                    <a
+                        href={`mailto:${email}`}
+                        className="inline-flex items-center gap-2 text-sm text-neutral-400 hover:text-white transition-colors pt-2"
+                    >
+                        <Mail className="w-4 h-4" />
+                        {email}
+                    </a>
                 </div>
             </div>
         </div>
